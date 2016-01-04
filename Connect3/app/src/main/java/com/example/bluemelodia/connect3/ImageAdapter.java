@@ -7,14 +7,35 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by bluemelodia on 1/4/16.
  */
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
 
+    private static final int EMPTY = 0;
+    private static final int SQUIRTLE = 1;
+    private static final int CHARMANDER = 2;
+    private List<Integer> tileStates = new ArrayList<Integer>();
+
+    private Map<Integer, Integer> tileStateResources = new HashMap<Integer, Integer>();
+
     public ImageAdapter(Context c) {
         mContext = c;
+        // Map each state to its graphics.
+        tileStateResources.put(EMPTY, R.drawable.pokemonicon);
+        tileStateResources.put(SQUIRTLE, R.drawable.squirtle);
+        tileStateResources.put(CHARMANDER, R.drawable.charmander);
+
+        // Each tile starts out as white.
+        for(int i = 0; i < 9; i++) {
+            tileStates.add(EMPTY);
+        }
     }
 
     public int getCount() {
@@ -59,10 +80,15 @@ public class ImageAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
+        // use the current state of the tile to pick which image goes into it
+        int state = tileStates.get(position);
+        int resID = tileStateResources.get(state);
+        imageView.setImageResource(resID);
+
         /* the position integer passed into the method is used to select an image from the
             mThumbIds array, which is set as the image resource for the ImageView
          */
-        imageView.setImageResource(mThumbIds[position]);
+        //imageView.setImageResource(mThumbIds[position]);
         return imageView;
     }
 
