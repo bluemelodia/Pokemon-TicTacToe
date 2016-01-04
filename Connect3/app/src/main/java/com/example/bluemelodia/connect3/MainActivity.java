@@ -86,15 +86,15 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Squirtle wins!", Toast.LENGTH_LONG).show();
             squirtleScore++;
             gameOver = 1;
-            TextView squirtleScore = (TextView) findViewById(R.id.squirtleScore);
-            squirtleScore.setText("Squirtle: " + squirtleScore);
+            TextView sScore = (TextView) findViewById(R.id.squirtleScore);
+            sScore.setText("Squirtle: " + squirtleScore);
             return true;
         } else if (winner == 2) {
             Toast.makeText(getApplicationContext(), "Charmander wins!", Toast.LENGTH_LONG).show();
             charmanderScore++;
             gameOver = 1;
-            TextView charmanderScore = (TextView) findViewById(R.id.charmanderScore);
-            charmanderScore.setText("Charmander: " + squirtleScore);
+            TextView cScore = (TextView) findViewById(R.id.charmanderScore);
+            cScore.setText("Charmander: " + charmanderScore);
             return true;
         }
 
