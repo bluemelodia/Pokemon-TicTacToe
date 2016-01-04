@@ -6,6 +6,7 @@ import android.content.Context;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.view.View;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,12 +40,30 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return 9;
     }
 
     // return the actual object at the specified position in the adapter
     public Object getItem(int position) {
         return null;
+    }
+
+    // get the current state of the tile
+    public int getTileState(int position) {
+        return tileStates.get(position);
+    }
+
+    // change the state of the tile
+    public void setTileState(int position, int newState) {
+        tileStates.set(position, newState);
+        for (int i = 0; i < 9; i++) {
+            Log.i("States:", String.valueOf(i) + " " + String.valueOf(tileStates.get(i)));
+        }
+    }
+
+    // get tile state resource
+    public int getStateResource(int state) {
+        return tileStateResources.get(state);
     }
 
     // return the row id of the item
@@ -82,8 +101,19 @@ public class ImageAdapter extends BaseAdapter {
         }
         // use the current state of the tile to pick which image goes into it
         int state = tileStates.get(position);
-        int resID = tileStateResources.get(state);
-        imageView.setImageResource(resID);
+        Log.i("Changing tile to state:", String.valueOf(state));
+        if (state == 0) {
+            Log.i("EMPTY", String.valueOf(state));
+            imageView.setImageResource(R.drawable.pokemonicon);
+        } else if (state == 1) {
+            Log.i("SQUIRTLE", String.valueOf(state));
+            imageView.setImageResource(R.drawable.squirtle);
+        } else if (state == 2) {
+            Log.i("CHARMANDER", String.valueOf(state));
+            imageView.setImageResource(R.drawable.charmander);
+        }
+        //Log.i("Changing tile to:", String.valueOf(resID));
+        //imageView.setImageResource(resID);
 
         /* the position integer passed into the method is used to select an image from the
             mThumbIds array, which is set as the image resource for the ImageView
@@ -93,11 +123,11 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     // references to our images
-    private Integer[] mThumbIds = {
+    /*private Integer[] mThumbIds = {
             R.drawable.pokemonicon, R.drawable.pokemonicon,
             R.drawable.pokemonicon, R.drawable.pokemonicon,
             R.drawable.pokemonicon, R.drawable.pokemonicon,
             R.drawable.pokemonicon, R.drawable.pokemonicon,
             R.drawable.pokemonicon
-    };
+    };*/
 }
