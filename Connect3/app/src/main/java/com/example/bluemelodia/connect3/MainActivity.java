@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private static ImageAdapter adapter;
     private static int squirtleScore = 0;
     private static int charmanderScore = 0;
+    private static int gameOver = 0;
 
     // change all the tiles back to the pokeball
     public void resetBoard(View view) {
@@ -39,21 +40,68 @@ public class MainActivity extends AppCompatActivity {
                 viewToChange.setImageResource(R.drawable.pokemonicon);
             }
         }
+        gameOver = 0;
         Toast.makeText(MainActivity.this, "Reset the board.", Toast.LENGTH_SHORT).show();
     }
 
-    /*private void dropSquirtle(int position) {
-        adapter.setTileState(position, 1);
-        //adapter.getView(position, null, null);
-    }
+    private boolean checkWin() {
+        int[][] board = new int[3][3];
+        board[0][0] = adapter.getTileState(0);
+        board[0][1] = adapter.getTileState(1);
+        board[0][2] = adapter.getTileState(2);
+        board[1][0] = adapter.getTileState(3);
+        board[1][1] = adapter.getTileState(4);
+        board[1][2] = adapter.getTileState(5);
+        board[2][0] = adapter.getTileState(6);
+        board[2][1] = adapter.getTileState(7);
+        board[2][2] = adapter.getTileState(8);
 
-    private void dropCharmander(int position) {
-        adapter.setTileState(position, 2);
-        //adapter.getView(position, null, null);
-    }*/
+        int winner = -1;
+        // check if anyone took one of the winning configurations
+        /*
+        *   00  01  02
+        *   10  11  12
+        *   20  21  22
+         */
+        if (board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] != 0) {
+            winner = board[0][0];
+        } else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] != 0) {
+            winner = board[1][0];
+        } else if (board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] != 0) {
+            winner = board[2][0];
+        } else if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != 0) {
+            winner = board[0][0]; // diagonal down
+        } else if (board[2][0] == board[1][1] && board[1][1] == board[0][2] && board[2][0] != 0) {
+            winner = board[2][0]; // diagonal up
+        } else if (board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[0][0] != 0) {
+            winner = board[0][0];
+        } else if (board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[0][1] != 0) {
+            winner = board[0][1];
+        } else if (board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[0][2] != 0) {
+            winner = board[0][2];
+        }
+        if (winner == 1) {
+            Toast.makeText(getApplicationContext(), "Squirtle wins!", Toast.LENGTH_LONG).show();
+            squirtleScore++;
+            gameOver = 1;
+            return true;
+        } else if (winner == 2) {
+            Toast.makeText(getApplicationContext(), "Charmander wins!", Toast.LENGTH_LONG).show();
+            charmanderScore++;
+            gameOver = 1;
+            return true;
+        }
 
-    private int checkWin() {
-        return 0;
+        // if the board is full and nobody won, it's a tie
+        boolean boardFull = true;
+        for (int i = 0; i < 9; i ++) {
+            if (adapter.getTileState(i) == 0) boardFull = false;
+        }
+        if (boardFull) {
+            gameOver = 1;
+            Toast.makeText(getApplicationContext(), "No more moves possible. It's a tie!", Toast.LENGTH_LONG).show();
+        }
+        return false;
     }
 
     @Override
@@ -86,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // user can only drop a squirtle or charmander on an empty tile
-                if (adapter.getTileState(position) == 0) {
-                    Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_LONG).show();
+                if (adapter.getTileState(position) == 0 && gameOver != 1) {
+                    //Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_LONG).show();
                     if (turn == 0) { // Squirtle
                         adapter.setTileState(position, 1);
                         int resID = adapter.getStateResource(1);
@@ -103,17 +151,19 @@ public class MainActivity extends AppCompatActivity {
                         viewToChange.setImageResource(R.drawable.charmander);
                         turn = 0; // Squirtle's turn
                     }
+                    boolean win = checkWin(); // did anyone win?
+                    if (!win) {
+                        TextView turnLabel = (TextView) findViewById(R.id.whoseTurn);
+                        TextView idLabel = (TextView) findViewById(R.id.you);
 
-                    TextView turnLabel = (TextView) findViewById(R.id.whoseTurn);
-                    TextView idLabel = (TextView) findViewById(R.id.you);
-
-                    // Change the label for the next person's turn
-                    if (turn == 1) {
-                        turnLabel.setText("It is Squirtle's turn");
-                        idLabel.setText("You are Squirtle.");
-                    } else {
-                        turnLabel.setText("It is Charmander's turn");
-                        idLabel.setText("You are Charmander.");
+                        // Change the label for the next person's turn
+                        if (turn == 1) {
+                            turnLabel.setText("It is Squirtle's turn");
+                            idLabel.setText("You are Squirtle.");
+                        } else {
+                            turnLabel.setText("It is Charmander's turn");
+                            idLabel.setText("You are Charmander.");
+                        }
                     }
                 }
             }
