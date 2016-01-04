@@ -14,6 +14,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -24,8 +26,20 @@ public class MainActivity extends AppCompatActivity {
     private static int squirtleScore = 0;
     private static int charmanderScore = 0;
 
-    public void restart(View view) {
-
+    // change all the tiles back to the pokeball
+    public void resetBoard(View view) {
+        GridView gridView =  (GridView) findViewById(R.id.gridView);
+        for (int i = 0; i < 9; i++) {
+            View child = gridView.getChildAt(i);
+            ImageView viewToChange = (ImageView) child;
+            Log.i("Grid: ", String.valueOf(viewToChange));
+            if (viewToChange != null) {
+                viewToChange.setAlpha(0.2f);
+                adapter.setTileState(i, 0);
+                viewToChange.setImageResource(R.drawable.pokemonicon);
+            }
+        }
+        Toast.makeText(MainActivity.this, "Reset the board.", Toast.LENGTH_SHORT).show();
     }
 
     /*private void dropSquirtle(int position) {

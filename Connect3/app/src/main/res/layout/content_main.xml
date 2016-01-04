@@ -89,7 +89,8 @@
             android:layout_height="wrap_content"
             android:text="Restart"
             android:id="@+id/button"
-            android:background="#ade153" />
+            android:background="#ade153"
+            android:onClick="resetBoard" />
 
     </LinearLayout>
 
