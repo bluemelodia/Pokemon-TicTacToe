@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
@@ -84,11 +86,15 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Squirtle wins!", Toast.LENGTH_LONG).show();
             squirtleScore++;
             gameOver = 1;
+            TextView squirtleScore = (TextView) findViewById(R.id.squirtleScore);
+            squirtleScore.setText("Squirtle: " + squirtleScore);
             return true;
         } else if (winner == 2) {
             Toast.makeText(getApplicationContext(), "Charmander wins!", Toast.LENGTH_LONG).show();
             charmanderScore++;
             gameOver = 1;
+            TextView charmanderScore = (TextView) findViewById(R.id.charmanderScore);
+            charmanderScore.setText("Charmander: " + squirtleScore);
             return true;
         }
 
@@ -157,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                         TextView idLabel = (TextView) findViewById(R.id.you);
 
                         // Change the label for the next person's turn
-                        if (turn == 1) {
+                        if (turn == 0) {
                             turnLabel.setText("It is Squirtle's turn");
                             idLabel.setText("You are Squirtle.");
                         } else {
