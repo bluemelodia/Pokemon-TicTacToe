@@ -15,12 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
-import java.util.List;
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
     // 0 = Squirtle, 1 = Charmander
     private static int turn = 0;
@@ -48,15 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean checkWin() {
         int[][] board = new int[3][3];
-        board[0][0] = adapter.getTileState(0);
-        board[0][1] = adapter.getTileState(1);
-        board[0][2] = adapter.getTileState(2);
-        board[1][0] = adapter.getTileState(3);
-        board[1][1] = adapter.getTileState(4);
-        board[1][2] = adapter.getTileState(5);
-        board[2][0] = adapter.getTileState(6);
-        board[2][1] = adapter.getTileState(7);
-        board[2][2] = adapter.getTileState(8);
+        int tile = 0;
+        // get all the tile states
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = adapter.getTileState(tile++);
+            }
+        }
 
         int winner = -1;
         // check if anyone took one of the winning configurations
@@ -131,17 +123,11 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ImageAdapter(this);
         gridView.setAdapter(adapter);
 
-        /* to do something when an item in the grid is clicked, the setOnItemClickListener() method
-            is passed a new AdapterView.OnItemClickListener. This anonymous instance defines the
-            onItemClick() callback method to show a Toast displaying the index position of the selected
-            item (in a real world scenario, the position could be used to get the full-sized image for
-            some other task) */
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // user can only drop a squirtle or charmander on an empty tile
                 if (adapter.getTileState(position) == 0 && gameOver != 1) {
-                    //Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_LONG).show();
                     if (turn == 0) { // Squirtle
                         adapter.setTileState(position, 1);
                         int resID = adapter.getStateResource(1);

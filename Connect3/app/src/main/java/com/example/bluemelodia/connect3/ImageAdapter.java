@@ -72,21 +72,6 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     // create a new ImageView for each item referenced by the Adapter
-    /* necessary method for BaseAdapter, creates a new View for each image added to the ImageAdapter
-        when this is called, a View is passed in, which is normally a recycled object (at least after
-        this has been called once), so there's a check to see if the object is null. If it is null,
-        an ImageView is instantiated and configured with desired properties for the image presentation:
-            setLayoutParams(ViewGroup.LayoutParams) sets the height and width for the View - this ensures
-                that, no matter the size of the drawable, each image is resized and cropped to fit in these
-                dimensions, as appropriate
-            setScaleType(ImageView.ScaleType) declares that images should be cropped towards the center
-                (if necessary)
-            setPadding(int, int, int, int) defines the padding for all sides. Note that, if the images
-                have different aspect-ratios, then less padding will cause more cropping of the image
-                if it does not match the dimensions given to the ImageView
-       if the View passed to getView() is not null, then the local ImageView is initialized with the
-       recycled View object.
-     */
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {
@@ -112,22 +97,6 @@ public class ImageAdapter extends BaseAdapter {
             Log.i("CHARMANDER", String.valueOf(state));
             imageView.setImageResource(R.drawable.charmander);
         }
-        //Log.i("Changing tile to:", String.valueOf(resID));
-        //imageView.setImageResource(resID);
-
-        /* the position integer passed into the method is used to select an image from the
-            mThumbIds array, which is set as the image resource for the ImageView
-         */
-        //imageView.setImageResource(mThumbIds[position]);
         return imageView;
     }
-
-    // references to our images
-    /*private Integer[] mThumbIds = {
-            R.drawable.pokemonicon, R.drawable.pokemonicon,
-            R.drawable.pokemonicon, R.drawable.pokemonicon,
-            R.drawable.pokemonicon, R.drawable.pokemonicon,
-            R.drawable.pokemonicon, R.drawable.pokemonicon,
-            R.drawable.pokemonicon
-    };*/
 }
